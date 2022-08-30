@@ -1,6 +1,5 @@
 <?php 
 
 interface HasGuessInterface {
-    function guess();
+    function guess($guess);
 }
-?>

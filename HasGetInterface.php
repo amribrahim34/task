@@ -1,6 +1,5 @@
 <?php 
 
 interface HasGetInterface {
-    function get();
+    function get($secret , $guess);
 }
-?>

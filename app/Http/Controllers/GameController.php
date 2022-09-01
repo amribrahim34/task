@@ -13,12 +13,14 @@ class GameController extends Controller implements HasGetResultInterface , HasGu
 {
     public function serve_view()
     {
-        $g = $this->create_or_get_game();
+        $g = $this->create_or_get_game()        // dd($str);
+        ;
         return view('welcome' ,['game' => $g]);
     }
 
     public function handle_request(StoreGameRequest $request)
-    {
+    {        // dd($str);
+
         $v = $request->validated();
         $g = $this->create_or_get_game();
         $str= $this->get_result($g->computer_secret , $v['computer_secret']);
@@ -31,16 +33,17 @@ class GameController extends Controller implements HasGetResultInterface , HasGu
     {
         $computer_secret_array = str_split($computer_secret);
         $guess_array = str_split($guess);
-        $secret_string = '';
+        // dd($computer_secret_array , $guess_array);
+        $secret_string = null;
         $rightNumArr = [];
         $i = 0;
-        foreach ($computer_secret_array as $num) {
-            if ($num == $guess_array[$i]) {
+        foreach ($guess_array as $num) {
+            if ($num == $computer_secret_array[$i]) {
                 $secret_string .= '*';
                 $rightNumArr[]=$num;
             }else{
-                if (in_array($num,$computer_secret_array) & !in_array($num , $rightNumArr)) {
-                    $secret_string .= '.' ;
+                if (in_array($num,$computer_secret_array) && !in_array($num , $rightNumArr)) {
+                    $secret_string .= '.';
                 }
             }
             $i++;

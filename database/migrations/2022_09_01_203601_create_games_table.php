@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('computer_secret')->nullable();
             $table->string('player_secret')->nullable();
             $table->string('guess_string')->nullable();
-            $table->unsignedBigInteger('num_of_guesses')->nullable();
+            $table->unsignedBigInteger('num_of_guesses')->default(0);
             $table->timestamps();
         });
     }

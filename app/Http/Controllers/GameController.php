@@ -13,8 +13,7 @@ class GameController extends Controller implements HasGetResultInterface , HasGu
 {
     public function serve_view()
     {
-        $g = $this->create_or_get_game()        // dd($str);
-        ;
+        $g = $this->create_or_get_game();
         return view('welcome' ,['game' => $g]);
     }
 
@@ -57,21 +56,6 @@ class GameController extends Controller implements HasGetResultInterface , HasGu
         $ply_sec = $g->player_secret;
         $rightNumArr = [];
         $str = null;
-        // $i = 0;
-        // foreach ($ply_str_arr as  $itm) {
-        //     if($itm == '*' ){
-        //         $str .= $ply_sec[$i];
-        //         $rightNumArr[]=$itm;
-        //     }else{
-        //         if ($itm == '.' & !in_array($itm , $rightNumArr)) {
-        //             $gn = $this->get_random_number($rightNumArr);
-        //             $str .= $gn;
-        //         }else{
-        //             $str .= 'k';
-        //         }
-        //     }
-        //     $i++;
-        // }
         for ($i=0; $i < 5; $i++) { 
             $ps = $ply_str_arr[$i] ?? null;
             $s = $ply_sec[$i];

@@ -9,6 +9,7 @@
   <body>
     <div class="container mt-5">
         <h1>Guessing Game</h1>
+        <h1>Num Of Rounds : {{$game->num_of_guesses}}</h1>
         <br/>
         <br/>
         @if ($errors->any())

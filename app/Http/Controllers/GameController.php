@@ -19,11 +19,11 @@ class GameController extends Controller implements HasGetResultInterface , HasGu
     }
 
     public function handle_request(StoreGameRequest $request)
-    {        // dd($str);
-
+    { 
         $v = $request->validated();
         $g = $this->create_or_get_game();
         $str= $this->get_result($g->computer_secret , $v['computer_secret']);
+        isset($v['guess']) ? $this->guess($v['guess']) : '';
         $g->update(['guess_string' => $str]);
         $g->increment('num_of_guesses');
         return redirect(route('home'));
@@ -33,7 +33,6 @@ class GameController extends Controller implements HasGetResultInterface , HasGu
     {
         $computer_secret_array = str_split($computer_secret);
         $guess_array = str_split($guess);
-        // dd($computer_secret_array , $guess_array);
         $secret_string = null;
         $rightNumArr = [];
         $i = 0;
@@ -57,22 +56,38 @@ class GameController extends Controller implements HasGetResultInterface , HasGu
         $ply_str_arr = str_split($player_string);
         $ply_sec = $g->player_secret;
         $rightNumArr = [];
-        $str = '';
-        $i = 0;
-        foreach ($ply_str_arr as  $itm) {
-            if($itm == '*' ){
-                $str .= $ply_sec[$i];
-                $rightNumArr[]=$itm;
+        $str = null;
+        // $i = 0;
+        // foreach ($ply_str_arr as  $itm) {
+        //     if($itm == '*' ){
+        //         $str .= $ply_sec[$i];
+        //         $rightNumArr[]=$itm;
+        //     }else{
+        //         if ($itm == '.' & !in_array($itm , $rightNumArr)) {
+        //             $gn = $this->get_random_number($rightNumArr);
+        //             $str .= $gn;
+        //         }else{
+        //             $str .= 'k';
+        //         }
+        //     }
+        //     $i++;
+        // }
+        for ($i=0; $i < 5; $i++) { 
+            $ps = $ply_str_arr[$i] ?? null;
+            $s = $ply_sec[$i];
+            if($ps == '*' ){
+                $str .= $s;
+                $rightNumArr[]=$ps ;
             }else{
-                if ($itm == '.' & !in_array($itm , $rightNumArr)) {
+                if ($ps  == '.' & !in_array($ps  , $rightNumArr)) {
                     $gn = $this->get_random_number($rightNumArr);
+                    $str .= $gn;
                 }else{
-                    $str .= 'k';
+                    $str .= $this->get_random_number($rightNumArr);
                 }
             }
-            $i++;
         }
-        $g->update(['player_secret'=>$str]);
+        is_null($str) ? '' :$g->update(['player_secret'=>$str]);
     }
 
     private function create_or_get_game()
